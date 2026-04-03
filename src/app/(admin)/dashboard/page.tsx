@@ -25,7 +25,7 @@ export default function DashboardPage() {
         </div>
         <div className="text-right">
           <p className="text-xs font-medium text-mahogany uppercase tracking-widest">Sexta-feira, 3 de Abril</p>
-          <p className="text-lg font-serif italic text-bronze">Nexus Lab AI Edition</p>
+          <p className="text-lg font-serif italic text-bronze">Dra. Maria Gonçalves</p>
         </div>
       </header>
 
