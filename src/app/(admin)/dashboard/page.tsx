@@ -93,38 +93,38 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Grid de Stats */}
+      {/* Grid de Stats - ALTO CONTRASTE PREMIUM */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card variant="premium" className="bg-white border-sand/40 p-6 flex flex-col justify-between h-36">
+        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
             <div className="flex justify-between items-start">
-                <div className="p-2 bg-bronze/10 rounded-lg text-bronze"><Users size={20} /></div>
-                <span className="text-[10px] font-bold text-mahogany/40 uppercase tracking-[0.2em]">Total Pacientes</span>
+                <div className="p-2 bg-white/10 rounded-lg text-bronze"><Users size={20} /></div>
+                <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em]">Total Pacientes</span>
             </div>
-            <p className="text-3xl font-serif text-ebony">{stats.totalPatients}</p>
+            <p className="text-3xl font-serif text-white">{stats.totalPatients}</p>
         </Card>
 
-        <Card variant="premium" className="bg-bronze text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
+        <Card variant="premium" className="bg-[#C5A059] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
             <div className="flex justify-between items-start">
-                <div className="p-2 bg-white/10 rounded-lg text-white"><TrendingUp size={20} /></div>
-                <span className="text-[10px] font-bold text-white/60 uppercase tracking-[0.2em]">Receita do Mês</span>
+                <div className="p-2 bg-white/20 rounded-lg text-white"><TrendingUp size={20} /></div>
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Receita do Mês</span>
             </div>
-            <p className="text-3xl font-serif">
+            <p className="text-3xl font-serif text-white">
                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(stats.monthlyRevenue)}
             </p>
         </Card>
 
-        <Card variant="premium" className="bg-white border-sand/40 p-6 flex flex-col justify-between h-36">
+        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
             <div className="flex justify-between items-start">
-                <div className="p-2 bg-mahogany/10 rounded-lg text-mahogany"><Clock size={20} /></div>
-                <span className="text-[10px] font-bold text-mahogany/40 uppercase tracking-[0.2em]">Consultas Hoje</span>
+                <div className="p-2 bg-white/10 rounded-lg text-bronze"><Clock size={20} /></div>
+                <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em]">Consultas Hoje</span>
             </div>
-            <p className="text-3xl font-serif text-ebony">{stats.todayAppointments.length}</p>
+            <p className="text-3xl font-serif text-white">{stats.todayAppointments.length}</p>
         </Card>
 
-        <Card variant="premium" className="bg-sand/20 border-sand/40 p-6 flex flex-col justify-between h-36">
+        <Card variant="premium" className="bg-white border-2 border-sand p-6 flex flex-col justify-between h-36 shadow-sm">
             <div className="flex justify-between items-start">
-                <div className="p-2 bg-bronze/10 rounded-lg text-bronze"><Syringe size={20} /></div>
-                <span className="text-[10px] font-bold text-mahogany/40 uppercase tracking-[0.2em]">Serviços Ativos</span>
+                <div className="p-2 bg-sand rounded-lg text-mahogany"><Syringe size={20} /></div>
+                <span className="text-[10px] font-bold text-mahogany/60 uppercase tracking-[0.2em]">Serviços Ativos</span>
             </div>
             <p className="text-3xl font-serif text-ebony">{stats.activeProcedures}</p>
         </Card>
