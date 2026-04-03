@@ -51,7 +51,7 @@ export default function DashboardPage() {
         .eq('payment_status', 'pago')
         .gte('created_at', firstDay.toISOString());
 
-      const monthlyTotal = revData?.reduce((acc, curr) => acc + parseFloat(curr.products_used?.price || 0), 0) || 0;
+      const monthlyTotal = revData?.reduce((acc: number, curr: any) => acc + parseFloat(curr.products_used?.price || 0), 0) || 0;
 
       setStats({
         todayAppointments: appts || [],

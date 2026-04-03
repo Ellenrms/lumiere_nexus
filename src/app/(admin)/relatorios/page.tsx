@@ -55,7 +55,7 @@ export default function RelatoriosPage() {
       const procCount: Record<string, number> = {};
       const payCount: Record<string, number> = {};
 
-      records?.forEach(r => {
+      records?.forEach((r: any) => {
         const date = new Date(r.created_at);
         const mIdx = date.getMonth();
         const amount = parseFloat(r.products_used?.price || 0);
