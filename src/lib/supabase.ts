@@ -3,10 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// Initialize only if keys are present to avoid build-time crashes
+// Initialize with a proxy if keys are missing to provide a better developer experience
 export const supabase = (supabaseUrl && supabaseAnonKey) 
   ? createClient(supabaseUrl, supabaseAnonKey)
-  : null as any;
+  : new Proxy({}, {
+      get: () => {
+        throw new Error("Supabase URL/Key não encontradas. Verifique as Environment Variables no Vercel e faça um Redeploy.");
+      }
+    }) as any;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Supabase URL or Anon Key is missing. If this is a build environment, ensure they are set in the platform settings.');
