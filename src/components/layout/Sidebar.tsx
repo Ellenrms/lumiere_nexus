@@ -38,6 +38,13 @@ export const Sidebar = () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
+          // EXCEÇÃO DE EMERGÊNCIA: Se for o e-mail da Ellen, é ADMIN.
+          if (user.email === 'adm.lumiere@lumiere.com') {
+            setUserRole('ADMIN');
+            setLoading(false);
+            return;
+          }
+
           const { data, error } = await supabase
             .from('profiles')
             .select('role')
