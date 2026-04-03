@@ -170,10 +170,22 @@ export default function PacientesPage() {
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button 
                           onClick={() => {
+                            // Link para abrir prontuário de atendimento (será implementado a seguir)
+                            alert('Iniciando Novo Atendimento para: ' + patient.full_name);
+                          }}
+                          className="p-2 hover:bg-bronze/10 rounded-xl text-bronze transition-colors flex items-center gap-1 text-xs font-medium"
+                          title="Novo Atendimento"
+                        >
+                          <Plus size={16} />
+                          <span className="hidden md:inline">Atendimento</span>
+                        </button>
+                        <button 
+                          onClick={() => {
                             setEditingPatient(patient);
                             setIsModalOpen(true);
                           }}
                           className="p-2 hover:bg-sand rounded-xl text-mahogany transition-colors"
+                          title="Ver Prontuário"
                         >
                           <Edit2 size={16} />
                         </button>
@@ -197,7 +209,7 @@ export default function PacientesPage() {
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        title={editingPatient ? 'Editar Ficha da Paciente' : 'Cadastrar Nova Paciente'}
+        title={editingPatient ? 'Prontuário da Paciente' : 'Criar Novo Registro'}
       >
         <PatientForm 
           initialData={editingPatient}

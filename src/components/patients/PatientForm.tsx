@@ -57,7 +57,6 @@ export const PatientForm: React.FC<PatientFormProps> = ({
 
       if (uploadError) throw uploadError;
 
-      // Get Public URL (or Signed URL if private)
       const { data } = supabase.storage
         .from('patient-photos')
         .getPublicUrl(filePath);
@@ -75,7 +74,6 @@ export const PatientForm: React.FC<PatientFormProps> = ({
     setLoading(true);
 
     try {
-      // Sanitização: enviar null em vez de string vazia para campos de tipo específico
       const patientData = {
         ...formData,
         birth_date: formData.birth_date || null,
@@ -95,7 +93,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({
       if (error) throw error;
       onSuccess();
     } catch (error: any) {
-      alert('Erro ao salvar paciente: ' + error.message);
+      alert('Erro ao salvar prontuário: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -134,7 +132,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({
           <Input
             label="CPF (Opcional)"
             name="cpf"
-            value={formData.cpf}
+            value={formData.cpf || ''}
             onChange={handleChange}
             placeholder="000.000.000-00"
           />
@@ -142,7 +140,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({
           <Input
             label="Telefone (Opcional)"
             name="phone"
-            value={formData.phone}
+            value={formData.phone || ''}
             onChange={handleChange}
             placeholder="(00) 00000-0000"
           />
@@ -151,7 +149,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({
             label="E-mail"
             name="email"
             type="email"
-            value={formData.email}
+            value={formData.email || ''}
             onChange={handleChange}
             placeholder="paciente@exemplo.com"
           />
@@ -160,21 +158,66 @@ export const PatientForm: React.FC<PatientFormProps> = ({
             label="Data de Nascimento"
             name="birth_date"
             type="date"
-            value={formData.birth_date}
+            value={formData.birth_date || ''}
             onChange={handleChange}
           />
 
+          {/* Novos Campos Clínicos (Anamnese) */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-sand/50">
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1 flex items-center gap-2">
+                Alergias Conhecidas
+              </label>
+              <textarea
+                name="allergies"
+                value={(formData as any).allergies || ''}
+                onChange={handleChange}
+                rows={2}
+                className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony placeholder:text-mid-gray outline-none transition-all focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
+                placeholder="Ex: Alergia a iodo, latex..."
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1 flex items-center gap-2">
+                Cirurgias Prévias
+              </label>
+              <textarea
+                name="surgeries"
+                value={(formData as any).surgeries || ''}
+                onChange={handleChange}
+                rows={2}
+                className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony placeholder:text-mid-gray outline-none transition-all focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
+                placeholder="Ex: Rinoplastia, Lipoaspiração..."
+              />
+            </div>
+
+            <div className="md:col-span-2 space-y-1.5">
+              <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1 flex items-center gap-2">
+                Tratamentos/Procedimentos Anteriores
+              </label>
+              <textarea
+                name="previous_treatments"
+                value={(formData as any).previous_treatments || ''}
+                onChange={handleChange}
+                rows={2}
+                className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony placeholder:text-mid-gray outline-none transition-all focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
+                placeholder="Ex: Preenchimento labial há 6 meses, Botox..."
+              />
+            </div>
+          </div>
+
           <div className="md:col-span-2 space-y-1.5">
             <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">
-              Observações / Histórico Médico
+              Observações Gerais
             </label>
             <textarea
               name="notes"
-              value={formData.notes}
+              value={formData.notes || ''}
               onChange={handleChange}
-              rows={4}
+              rows={3}
               className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony placeholder:text-mid-gray outline-none transition-all focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
-              placeholder="Alergias, condições prévias, observações gerais..."
+              placeholder="Observações adicionais..."
             />
           </div>
         </div>
@@ -185,7 +228,7 @@ export const PatientForm: React.FC<PatientFormProps> = ({
           Cancelar
         </Button>
         <Button variant="primary" type="submit" disabled={loading || uploading}>
-          {loading ? 'Salvando...' : (initialData ? 'Atualizar Ficha' : 'Cadastrar Paciente')}
+          {loading ? 'Salvando...' : (initialData ? 'Atualizar Prontuário' : 'Criar Registro')}
         </Button>
       </div>
     </form>
