@@ -7,14 +7,21 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  maxWidth?: string;
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+export const Modal: React.FC<ModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children,
+  maxWidth = 'max-w-4xl' 
+}) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ebony/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <Card variant="premium" className="w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl">
+      <Card variant="premium" className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto relative shadow-2xl`}>
         <header className="flex justify-between items-center mb-8 pb-4 border-b border-sand">
           <h2 className="text-display text-2xl text-ebony">{title}</h2>
           <button 

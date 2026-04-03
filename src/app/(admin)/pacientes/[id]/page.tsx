@@ -7,6 +7,7 @@ import { Avatar } from '@/components/ui/Avatar';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { MedicalRecordForm } from '@/components/records/MedicalRecordForm';
+import { PhotoComparator } from '@/components/clinical/PhotoComparator';
 import { 
   Calendar, 
   Clock, 
@@ -20,7 +21,8 @@ import {
   History,
   Edit2,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  Columns
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,7 +32,12 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
   const [records, setRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const [isComparatorOpen, setIsComparatorOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<any>(null);
+
+  const allPhotos = records.reduce((acc: any[], current: any) => {
+    return [...acc, ...(current.record_photos || [])];
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -140,15 +147,27 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
               <History className="text-bronze" size={24} />
               Linha do Tempo
             </h2>
-            <Button 
-              variant="primary" 
-              size="sm" 
-              className="flex items-center gap-2 shadow-md"
-              onClick={() => setIsRecordModalOpen(true)}
-            >
-              <Plus size={16} />
-              Novo Atendimento
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex items-center gap-2 border-bronze/30 text-bronze hover:bg-bronze hover:text-white transition-all shadow-sm"
+                onClick={() => setIsComparatorOpen(true)}
+                disabled={allPhotos.length < 2}
+              >
+                <Columns size={16} />
+                Antes e Depois
+              </Button>
+              <Button 
+                variant="primary" 
+                size="sm" 
+                className="flex items-center gap-2 shadow-md"
+                onClick={() => setIsRecordModalOpen(true)}
+              >
+                <Plus size={16} />
+                Novo Atendimento
+              </Button>
+            </div>
           </div>
 
           {records.length === 0 ? (
@@ -253,6 +272,13 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
           }}
         />
       </Modal>
+
+      {/* Ferramenta de Comparativo Antes e Depois */}
+      <PhotoComparator 
+        isOpen={isComparatorOpen}
+        onClose={() => setIsComparatorOpen(false)}
+        availablePhotos={allPhotos}
+      />
     </div>
   );
 }
