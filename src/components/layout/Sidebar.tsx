@@ -19,7 +19,7 @@ const menuItems = [
   { icon: Home, label: 'Dashboard', href: '/dashboard' },
   { icon: Calendar, label: 'Agenda', href: '/agenda' },
   { icon: Users, label: 'Pacientes', href: '/pacientes' },
-  { icon: Package, label: 'Estoque', href: '/estoque' },
+  { icon: Package, label: 'Procedimentos', href: '/procedimentos' },
   { icon: DollarSign, label: 'Financeiro', href: '/financeiro' },
   { icon: BarChart3, label: 'Relatórios', href: '/relatorios' },
   { icon: Settings, label: 'Configurações', href: '/configuracoes' },
