@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #F9F6F2; /* Chrome: Base background */
+    --foreground: #1C1712; /* Ebony: Main text */
+
+    /* Premium Palette Tokens */
+    --chrome: #F9F6F2;
+    --sand: #EDE5D8;
+    --champagne: #C4A882;
+    --bronze: #A07850;
+    --mahogany: #6B4F3A;
+    --ebony: #1C1712;
+    --mid-gray: #888888;
+  }
+
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    
+    /* Brand Colors */
+    --color-chrome: var(--chrome);
+    --color-sand: var(--sand);
+    --color-champagne: var(--champagne);
+    --color-bronze: var(--bronze);
+    --color-mahogany: var(--mahogany);
+    --color-ebony: var(--ebony);
+    --color-mid-gray: var(--mid-gray);
+
+    --font-serif: "Georgia", "Cormorant Garamond", serif;
+    --font-sans: "Inter", system-ui, sans-serif;
+    
+    --radius-lg: 12px;
+    --radius-md: calc(12px - 2px);
+    --radius-sm: calc(12px - 4px);
+    
+    --shadow-premium: 0 2px 8px rgba(28, 23, 18, 0.08);
+  }
+
+  body {
+    @apply bg-chrome text-ebony font-sans antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    @apply font-serif;
+  }
+}
+
+/* Custom Utilities */
+.text-display {
+  @apply font-serif italic text-4xl sm:text-5xl leading-tight;
+}
+
+.text-page-title {
+  @apply font-serif text-2xl sm:text-3xl font-normal;
+}
+
+.text-subtitle {
+  @apply font-sans text-lg font-semibold tracking-wide uppercase;
+}
