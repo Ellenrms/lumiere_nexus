@@ -95,15 +95,15 @@ export default function DashboardPage() {
 
       {/* Grid de Stats - ALTO CONTRASTE PREMIUM */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
+        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border border-bronze/20 shadow-xl">
             <div className="flex justify-between items-start">
                 <div className="p-2 bg-white/10 rounded-lg text-bronze"><Users size={20} /></div>
-                <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em]">Total Pacientes</span>
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Total Pacientes</span>
             </div>
             <p className="text-3xl font-serif text-white">{stats.totalPatients}</p>
         </Card>
 
-        <Card variant="premium" className="bg-[#C5A059] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
+        <Card variant="premium" className="bg-[#C5A059] !text-white p-6 flex flex-col justify-between h-36 border border-white/20 shadow-xl">
             <div className="flex justify-between items-start">
                 <div className="p-2 bg-white/20 rounded-lg text-white"><TrendingUp size={20} /></div>
                 <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Receita do Mês</span>
@@ -113,10 +113,10 @@ export default function DashboardPage() {
             </p>
         </Card>
 
-        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border-none shadow-xl">
+        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 flex flex-col justify-between h-36 border border-bronze/20 shadow-xl">
             <div className="flex justify-between items-start">
                 <div className="p-2 bg-white/10 rounded-lg text-bronze"><Clock size={20} /></div>
-                <span className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em]">Consultas Hoje</span>
+                <span className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">Consultas Hoje</span>
             </div>
             <p className="text-3xl font-serif text-white">{stats.todayAppointments.length}</p>
         </Card>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
         <Card variant="premium" className="bg-white border-2 border-sand p-6 flex flex-col justify-between h-36 shadow-sm">
             <div className="flex justify-between items-start">
                 <div className="p-2 bg-sand rounded-lg text-mahogany"><Syringe size={20} /></div>
-                <span className="text-[10px] font-bold text-mahogany/60 uppercase tracking-[0.2em]">Serviços Ativos</span>
+                <span className="text-[10px] font-bold text-mahogany font-sans uppercase tracking-[0.2em]">Serviços Ativos</span>
             </div>
             <p className="text-3xl font-serif text-ebony">{stats.activeProcedures}</p>
         </Card>
