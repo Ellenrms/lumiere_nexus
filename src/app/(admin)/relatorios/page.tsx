@@ -38,11 +38,11 @@ export default function RelatoriosPage() {
 
         if (apptError || recError) throw new Error('Falha ao carregar dados');
 
-        const totalRevenue = records ? records.reduce((acc, curr) => acc + (parseFloat(curr.products_used?.price) || 0), 0) : 0;
-        const totalPatients = appts ? new Set(appts.map(a => a.patient_id)).size : 0;
+        const totalRevenue = records ? records.reduce((acc: number, curr: any) => acc + (parseFloat(curr.products_used?.price) || 0), 0) : 0;
+        const totalPatients = appts ? new Set(appts.map((a: any) => a.patient_id)).size : 0;
 
         const proceduresCount: any = {};
-        appts?.forEach(a => {
+        appts?.forEach((a: any) => {
           const name = a.procedures?.name || 'Consulta/Outros';
           proceduresCount[name] = (proceduresCount[name] || 0) + 1;
         });
@@ -53,7 +53,7 @@ export default function RelatoriosPage() {
           .slice(0, 5);
 
         const payments: any = { Pix: 0, Dinheiro: 0, Cartão: 0 };
-        records?.forEach(r => {
+        records?.forEach((r: any) => {
           if (r.payment_method) {
             payments[r.payment_method] = (payments[r.payment_method] || 0) + (parseFloat(r.products_used?.price) || 0);
           }
@@ -139,7 +139,7 @@ export default function RelatoriosPage() {
           <p className="text-[10px] uppercase tracking-[0.2em] text-mid-gray">Valor Médio/Sessão</p>
           <div className="flex justify-between items-end">
             <span className="text-2xl font-serif text-ebony">
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue / (stats.topProcedures.reduce((a, b)=>a+b.count,0) || 1))}
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats.totalRevenue / (stats.topProcedures.reduce((a: number, b: any)=>a+b.count,0) || 1))}
             </span>
             <ShoppingBag size={20} className="text-bronze" />
           </div>

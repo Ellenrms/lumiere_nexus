@@ -74,7 +74,7 @@ export default function FinanceiroPage() {
     }
   };
 
-  const totals = records.reduce((acc, current) => {
+  const totals = records.reduce((acc: any, current: any) => {
     const valet = parseFloat(current.products_used?.price || 0);
     if (current.payment_status === 'pago') {
       acc.paid += valet;
@@ -84,7 +84,7 @@ export default function FinanceiroPage() {
     return acc;
   }, { paid: 0, pending: 0 });
 
-  const averageTicket = records.length > 0 ? totals.paid / records.filter(r => r.payment_status === 'pago').length || 0 : 0;
+  const averageTicket = records.length > 0 ? totals.paid / records.filter((r: any) => r.payment_status === 'pago').length || 0 : 0;
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
