@@ -157,7 +157,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
       {/* Busca de Paciente - Oculto se for bloqueio */}
       {!isBlock && (
         <div className="space-y-1.5 relative animate-in fade-in slide-in-from-top-2">
-          <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">Paciente *</label>
+          <label className="text-[10px] font-bold text-ebony uppercase tracking-[0.15em] pl-1">Paciente *</label>
           <div className="relative">
             <Input 
               placeholder="Digite o nome para buscar..."
@@ -208,7 +208,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
 
       {!isBlock && (
         <div className="space-y-1.5 animate-in fade-in">
-          <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">Procedimento Previsto</label>
+          <label className="text-[10px] font-bold text-ebony uppercase tracking-[0.15em] pl-1">Procedimento Previsto</label>
           <select 
             className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony outline-none focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
             value={formData.procedure_id}
@@ -230,7 +230,7 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
       />
 
       <div className="space-y-1.5">
-        <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">
+        <label className="text-[10px] font-bold text-ebony uppercase tracking-[0.15em] pl-1">
           {isBlock ? "Motivo do Bloqueio" : "Observações do Agendamento"}
         </label>
         <textarea 

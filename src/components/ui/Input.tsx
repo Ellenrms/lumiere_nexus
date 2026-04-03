@@ -14,7 +14,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className="flex flex-col gap-1.5 w-full">
       {label && (
-        <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">
+        <label className="text-[10px] font-bold text-ebony uppercase tracking-[0.15em] pl-1">
           {label}
         </label>
       )}

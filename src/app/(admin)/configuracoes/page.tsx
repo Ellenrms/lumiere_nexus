@@ -184,7 +184,7 @@ export default function ConfiguracoesPage() {
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
             />
             <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-mahogany uppercase tracking-widest pl-1">Cargo / Role</label>
+                <label className="text-[10px] font-bold text-ebony uppercase tracking-[0.15em] pl-1">Cargo / Role</label>
                 <select 
                     className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony outline-none focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm font-sans"
                     value={formData.role}
@@ -196,8 +196,8 @@ export default function ConfiguracoesPage() {
             </div>
             <div className="p-4 bg-sand/20 rounded-xl flex items-start gap-3 border border-sand shadow-inner">
                 <Lock size={16} className="text-bronze shrink-0 mt-0.5" />
-                <p className="text-[10px] text-mahogany/70 leading-relaxed font-sans">
-                    <strong>Atenção:</strong> A senha provisória padrão é <code className="bg-white px-1 py-0.5 rounded border border-sand font-bold text-ebony">nexus@2024</code>. Oriente a colaboradora a trocá-la no primeiro acesso.
+                <p className="text-[10px] text-ebony/70 leading-relaxed font-sans">
+                    <strong className="text-ebony">Atenção:</strong> A senha provisória padrão é <code className="bg-white px-1 py-0.5 rounded border border-sand font-bold text-ebony">nexus@2024</code>. Oriente a colaboradora a trocá-la no primeiro acesso.
                 </p>
             </div>
           </div>

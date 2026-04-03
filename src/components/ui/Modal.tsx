@@ -21,8 +21,8 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-ebony/60 backdrop-blur-sm animate-in fade-in duration-300">
-      <Card variant="premium" className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto relative shadow-2xl`}>
-        <header className="flex justify-between items-center mb-8 pb-4 border-b border-sand">
+      <Card variant="premium" className={`w-full ${maxWidth} max-h-[90vh] overflow-y-auto relative shadow-2xl bg-[#F5F1E9] border-none`}>
+        <header className="flex justify-between items-center mb-8 pb-4 border-b border-bronze/20">
           <h2 className="text-display text-2xl text-ebony">{title}</h2>
           <button 
             onClick={onClose} 
