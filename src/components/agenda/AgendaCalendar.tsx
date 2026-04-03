@@ -181,7 +181,7 @@ export const AgendaCalendar = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Lateral Esquerda */}
+        {/* Lateral Esquerda - FILTRANDO STATUS */}
         <div className="lg:col-span-1 border-r border-sand/50 pr-4 space-y-6">
             <Card variant="premium" className="p-5 bg-[#1A1A1A] text-white border-none shadow-xl">
                 <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze mb-4">Resumo Clínico</h3>
@@ -194,24 +194,23 @@ export const AgendaCalendar = () => {
             </Card>
 
             <div className="space-y-4">
-                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-mahogany pl-1 font-sans">Próximas Pacientes</h3>
+                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-mahogany pl-1">Próximas Pacientes</h3>
                 {appointments.filter(a => a.status === 'confirmado' || a.status === 'presente').length === 0 ? (
-                    <p className="text-xs text-mid-gray italic pl-1 font-serif">Nenhum agendamento pendente.</p>
+                    <p className="text-xs text-mid-gray italic pl-1">Nenhum atendimento pendente para hoje.</p>
                 ) : (
                     <div className="space-y-3">
                         {appointments
                             .filter(a => a.status === 'confirmado' || a.status === 'presente')
                             .slice(0, 5)
                             .map((appt) => (
-                                <div key={appt.id} className="p-3 bg-white border border-sand/60 rounded-xl shadow-sm hover:border-bronze/40 transition-colors group">
-                                    <p className="text-[10px] font-bold text-bronze mb-1">
-                                        {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                                    </p>
-                                    <p className="text-xs font-bold text-ebony truncate group-hover:text-bronze transition-colors">{appt.patients?.full_name}</p>
-                                    <p className="text-[10px] text-mid-gray truncate font-sans">{appt.procedures?.name || 'Consulta'}</p>
-                                </div>
-                            ))
-                        }
+                            <div key={appt.id} className="p-3 bg-white border border-sand/60 rounded-xl shadow-sm hover:border-bronze/40 transition-colors group">
+                                <p className="text-[10px] font-bold text-bronze mb-1">
+                                    {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                                <p className="text-xs font-bold text-ebony truncate group-hover:text-bronze transition-colors">{appt.patients?.full_name}</p>
+                                <p className="text-[10px] text-mid-gray truncate">{appt.procedures?.name || 'Consulta'}</p>
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
@@ -284,12 +283,8 @@ export const AgendaCalendar = () => {
                                                     <Syringe size={10} className="text-bronze" /> {appt.procedures?.name || 'Consulta'}
                                                 </p>
                                             )}
-                                            {isBlocked && appt.notes && (
-                                                <p className="text-[9px] text-slate-400 italic truncate mt-0.5">{appt.notes}</p>
-                                            )}
                                         </div>
                                         
-                                        {/* Badge de Status */}
                                         {!isBlocked && appt.status !== 'confirmado' && (
                                             <span className={`text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full w-fit mt-1 ${
                                                 isFalta ? 'bg-red-200 text-red-700' : 
@@ -306,7 +301,6 @@ export const AgendaCalendar = () => {
                                         {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                                     </p>
                                     
-                                    {/* Botão de Menu Três Pontos */}
                                     <div className="relative mt-auto">
                                         <button 
                                             onClick={(e) => {
@@ -318,7 +312,6 @@ export const AgendaCalendar = () => {
                                             <MoreHorizontal size={16} className={isBlocked ? 'text-slate-400' : 'text-ebony/40'} />
                                         </button>
 
-                                        {/* Menu Suspenso (Dropdown) */}
                                         {activeMenu === appt.id && (
                                             <div className="absolute right-0 bottom-8 z-50 w-44 bg-white border border-sand rounded-xl shadow-2xl p-1 animate-in zoom-in-95 duration-150 origin-bottom-right">
                                                 <div className="text-[10px] uppercase font-bold text-mahogany/40 px-3 py-2 border-b border-sand/40">Ações</div>
@@ -345,7 +338,6 @@ export const AgendaCalendar = () => {
                 })
             )}
 
-            {/* Marcador de Hora Atual */}
             {new Date().toDateString() === currentDate.toDateString() && (
                 <div 
                     className="absolute left-0 right-0 border-t-2 border-red-400 z-20 pointer-events-none before:absolute before:-top-1 before:left-0 before:w-2 before:h-2 before:bg-red-400 before:rounded-full"
