@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -15,10 +16,12 @@ import {
   DollarSign, 
   Tag,
   Loader2,
-  Settings2
+  Settings2,
+  ChevronLeft
 } from 'lucide-react';
 
 export default function ProcedimentosPage() {
+  const router = useRouter();
   const [procedures, setProcedures] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -102,12 +105,20 @@ export default function ProcedimentosPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-page-header">
-        <div>
-          <h1 className="text-page-title text-ebony">Catálogo de Procedimentos</h1>
-          <p className="text-sm text-mid-gray">Defina os serviços e preços da Lumière</p>
+    <div className="space-y-8 max-w-6xl mx-auto animate-in fade-in duration-500">
+      {/* Header com Voltar */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => router.back()}
+            className="p-2 hover:bg-sand rounded-full text-mahogany transition-all border border-sand shadow-sm bg-white"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <div>
+            <h1 className="text-display text-4xl text-ebony">Catálogo de Procedimentos</h1>
+            <p className="text-sm text-mid-gray italic font-serif">Defina os serviços e preços da Lumière</p>
+          </div>
         </div>
         <Button 
           variant="primary" 
@@ -124,7 +135,6 @@ export default function ProcedimentosPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Filters Sidebar */}
         <aside className="lg:col-span-1 space-y-6">
           <Card variant="premium" className="p-6">
             <h3 className="text-sm font-medium text-mahogany uppercase tracking-widest mb-4">Busca Rápida</h3>
@@ -133,7 +143,7 @@ export default function ProcedimentosPage() {
               <input 
                 type="text" 
                 placeholder="Ex: Botox..."
-                className="w-full pl-10 pr-4 py-2.5 bg-sand/20 rounded-lg text-sm text-ebony outline-none focus:ring-1 focus:ring-bronze/30"
+                className="w-full pl-10 pr-4 py-2.5 bg-sand/20 rounded-lg text-sm text-ebony outline-none focus:ring-1 focus:ring-bronze/30 font-sans"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -151,7 +161,6 @@ export default function ProcedimentosPage() {
           </Card>
         </aside>
 
-        {/* Categories / Procedures List */}
         <div className="lg:col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {loading ? (
@@ -164,7 +173,7 @@ export default function ProcedimentosPage() {
               </Card>
             ) : (
               procedures.map((proc) => (
-                <Card key={proc.id} className="group hover:border-bronze/30 transition-all cursor-default">
+                <Card key={proc.id} className="group hover:border-bronze/30 transition-all cursor-default bg-white shadow-sm">
                   <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-sand/50 rounded-lg text-bronze">
                       <Settings2 size={20} />
@@ -182,13 +191,13 @@ export default function ProcedimentosPage() {
                           });
                           setIsModalOpen(true);
                         }}
-                        className="p-1.5 hover:bg-sand rounded-lg text-mahogany"
+                        className="p-1.5 hover:bg-sand rounded-lg text-mahogany transition-colors"
                       >
                         <Edit2 size={14} />
                       </button>
                       <button 
                         onClick={() => handleDelete(proc.id)}
-                        className="p-1.5 hover:bg-red-50 rounded-lg text-red-500"
+                        className="p-1.5 hover:bg-red-50 rounded-lg text-red-500 transition-colors"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -260,8 +269,8 @@ export default function ProcedimentosPage() {
             placeholder="Ex: Facial, Corporal"
           />
 
-          <div className="flex justify-end gap-4 pt-4">
-            <Button variant="ghost" onClick={() => setIsModalOpen(false)} type="button">Cancelar</Button>
+          <div className="flex justify-end gap-3 pt-6 border-t border-sand/30">
+            <Button variant="outline" onClick={() => setIsModalOpen(false)} type="button">Cancelar</Button>
             <Button variant="primary" type="submit" disabled={saving}>
               {saving ? 'Gravando...' : (editingProcedure ? 'Atualizar catálogo' : 'Adicionar ao catálogo')}
             </Button>

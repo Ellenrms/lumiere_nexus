@@ -97,18 +97,26 @@ export const AgendaCalendar = () => {
       return (apptStart < aEnd && apptEnd > aStart);
     });
 
-    if (overlaps.length === 0) return { width: 'calc(100% - 84px)', left: '80px' };
+    // Largura descontando a coluna de horas (que tem ~60px fixos)
+    const containerPadding = 60; 
 
-    // Lógica simples de divisão de espaço
-    const index = [...overlaps, appt].sort((a,b) => a.id.localeCompare(b.id)).findIndex(a => a.id === appt.id);
-    const count = overlaps.length + 1;
-    const widthPercentage = (100 - 15) / count; // 15% reservado para as labels de hora
-    const left = 80 + (index * ((100 - 15) / count) * 8); // Offset heurístico para visualização
+    if (overlaps.length === 0) {
+        return { width: `calc(100% - ${containerPadding + 20}px)`, left: `${containerPadding}px` };
+    }
+
+    // Ordenar por ID para manter a ordem consistente
+    const sortedGroup = [...overlaps, appt].sort((a,b) => a.id.localeCompare(b.id));
+    const index = sortedGroup.findIndex(a => a.id === appt.id);
+    const count = sortedGroup.length;
+    
+    const availableWidth = 100 - 15; // 15% para a margem esquerda das horas
+    const widthPerAppt = availableWidth / count;
+    const startLeft = 10; // Começa em 10% da largura
 
     return { 
-        width: `${widthPercentage}%`, 
-        left: `${80 + (index * (80 / count))}%`,
-        maxWidth: `${widthPercentage}%`
+        width: `${widthPerAppt}%`, 
+        left: `${startLeft + (index * widthPerAppt)}%`,
+        maxWidth: `${widthPerAppt}%`
     };
   };
 

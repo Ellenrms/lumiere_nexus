@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { useRouter } from 'next/navigation';
 import { 
   DollarSign, 
   Search, 
@@ -15,10 +16,12 @@ import {
   Clock,
   Loader2,
   TrendingUp,
-  Receipt
+  Receipt,
+  ChevronLeft
 } from 'lucide-react';
 
 export default function FinanceiroPage() {
+  const router = useRouter();
   const [records, setRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [dateFilter, setDateFilter] = useState(new Date().toISOString().split('T')[0]);
@@ -85,11 +88,19 @@ export default function FinanceiroPage() {
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
-      {/* Header com Filtro de Data */}
+      {/* Header com Filtro de Data e Voltar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div>
-          <h1 className="text-display text-4xl text-ebony">Fluxo Financeiro</h1>
-          <p className="text-sm text-mid-gray italic font-serif">Acompanhamento de atendimentos e recebimentos</p>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => router.back()}
+            className="p-2 hover:bg-sand rounded-full text-mahogany transition-all border border-sand shadow-sm"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <div>
+            <h1 className="text-display text-4xl text-ebony">Fluxo Financeiro</h1>
+            <p className="text-sm text-mid-gray italic font-serif">Acompanhamento de atendimentos e recebimentos</p>
+          </div>
         </div>
         <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-sand">
           <Calendar size={18} className="text-bronze ml-2" />
@@ -102,25 +113,25 @@ export default function FinanceiroPage() {
         </div>
       </div>
 
-      {/* Cards de Resumo */}
+      {/* Cards de Resumo - CORRIGINDO CONTRASTE EXTREMO */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card variant="premium" className="bg-[#1A1A1A] text-white p-6 shadow-xl border-none">
+        <Card variant="premium" className="bg-[#1A1A1A] !text-white p-6 shadow-xl border-none">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.2em] opacity-60 mb-1">Total Recebido</p>
-              <p className="text-2xl font-serif">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.paid)}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-1">Total Recebido</p>
+              <p className="text-2xl font-serif text-white">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.paid)}</p>
             </div>
-            <TrendingUp size={24} className="opacity-30 text-bronze" />
+            <TrendingUp size={24} className="text-bronze" />
           </div>
         </Card>
 
-        <Card variant="premium" className="bg-[#C5A059] text-white p-6 shadow-xl border-none">
+        <Card variant="premium" className="bg-[#C5A059] !text-white p-6 shadow-xl border-none">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.2em] opacity-80 mb-1">A Receber (Pendentes)</p>
-              <p className="text-2xl font-serif">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.pending)}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-white/80 mb-1">A Receber (Pendentes)</p>
+              <p className="text-2xl font-serif text-white">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.pending)}</p>
             </div>
-            <Clock size={24} className="opacity-40" />
+            <Clock size={24} className="text-white/40" />
           </div>
         </Card>
 

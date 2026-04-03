@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -19,10 +20,12 @@ import {
   Trash2,
   Phone,
   Mail,
-  Loader2
+  Loader2,
+  ChevronLeft
 } from 'lucide-react';
 
 export default function PacientesPage() {
+  const router = useRouter();
   const [patients, setPatients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -71,12 +74,20 @@ export default function PacientesPage() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-8 animate-in fade-in duration-500">
+      {/* Header com Voltar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div>
-          <h1 className="text-page-title text-ebony">Gestão de Pacientes</h1>
-          <p className="text-sm text-mid-gray">Base de prontuários e contatos da clínica</p>
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => router.back()}
+            className="p-2 hover:bg-sand rounded-full text-mahogany transition-all border border-sand shadow-sm bg-white"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <div>
+            <h1 className="text-display text-4xl text-ebony">Gestão de Pacientes</h1>
+            <p className="text-sm text-mid-gray italic font-serif">Base de prontuários e contatos da clínica</p>
+          </div>
         </div>
         <Button 
           variant="primary" 
@@ -130,7 +141,7 @@ export default function PacientesPage() {
                 <tr>
                   <td colSpan={5} className="px-8 py-20 text-center">
                     <div className="max-w-xs mx-auto space-y-4">
-                      <p className="text-mid-gray font-serif italic italic font-serif italic italic font-serif italic italic font-serif italic text-lg">Sem registros encontrados.</p>
+                      <p className="text-mid-gray font-serif italic text-lg">Sem registros encontrados.</p>
                       <Button variant="outline" size="sm" onClick={() => setIsModalOpen(true)}>
                         Adicionar primeira paciente
                       </Button>

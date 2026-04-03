@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { Modal } from '@/components/ui/Modal';
 import { 
   Users, 
   ShieldCheck, 
@@ -13,11 +15,12 @@ import {
   Lock,
   Loader2,
   Trash2,
-  ShieldAlert
+  ShieldAlert,
+  ChevronLeft
 } from 'lucide-react';
-import { Modal } from '@/components/ui/Modal';
 
 export default function ConfiguracoesPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,10 +59,6 @@ export default function ConfiguracoesPage() {
     setSaving(true);
     
     try {
-      // Nota: No Supabase Client-side, signUp desloga o admin.
-      // Em uma aplicação real, usamos Server Actions com Service Role.
-      // Para este MVP, vamos criar apenas o perfil ou usar o Invite se disponível.
-      
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -84,13 +83,21 @@ export default function ConfiguracoesPage() {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <header className="flex justify-between items-end">
-        <div>
-          <h1 className="text-display text-4xl text-ebony font-serif">Configurações</h1>
-          <p className="text-mid-gray italic font-serif text-lg">Segurança e gestão de equipe da clínica</p>
+    <div className="space-y-8 animate-in fade-in duration-500 max-w-7xl mx-auto">
+      <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={() => router.back()}
+            className="p-2 hover:bg-sand rounded-full text-mahogany transition-all border border-sand shadow-sm bg-white"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <div>
+            <h1 className="text-display text-4xl text-ebony">Configurações</h1>
+            <p className="text-sm text-mid-gray italic font-serif">Segurança e gestão de equipe da clínica</p>
+          </div>
         </div>
-        <Button variant="primary" onClick={() => setIsModalOpen(true)}>
+        <Button variant="primary" onClick={() => setIsModalOpen(true)} className="shadow-lg">
           <UserPlus size={18} className="mr-2" /> Nova Colaboradora
         </Button>
       </header>
@@ -98,8 +105,8 @@ export default function ConfiguracoesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Lista de Usuários */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="text-sm font-bold uppercase tracking-widest text-mahogany flex items-center gap-2">
-            <Users size={16} /> Equipe Cadastrada
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-mahogany flex items-center gap-2 pl-1">
+            <Users size={14} className="text-bronze" /> Equipe Cadastrada
           </h3>
           
           {loading ? (
@@ -132,22 +139,22 @@ export default function ConfiguracoesPage() {
 
         {/* Info de Segurança */}
         <div className="space-y-6">
-            <Card variant="premium" className="p-6 bg-bronze/5 border-bronze/20">
+            <Card variant="premium" className="p-6 bg-bronze/5 border-bronze/20 shadow-inner">
                 <div className="flex items-center gap-3 mb-4 text-bronze">
                     <ShieldAlert size={20} />
-                    <h4 className="text-xs font-bold uppercase tracking-widest">Níveis de Acesso</h4>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em]">Níveis de Acesso</h4>
                 </div>
-                <div className="space-y-4 text-xs text-mid-gray leading-relaxed">
-                    <p><strong>ADMIN:</strong> Acesso total às finanças, prontuários e configurações.</p>
-                    <p><strong>RECEPTION:</strong> Pode agendar e cadastrar pacientes. Não vê dados financeiros ou notas médicas.</p>
+                <div className="space-y-4 text-xs text-mahogany/80 leading-relaxed">
+                    <p><strong>ADMIN:</strong> Acesso total às finanças, prontuários e configurações do sistema.</p>
+                    <p><strong>RECEPTION:</strong> Pode agendar sessões e cadastrar pacientes. Não tem acesso a dados financeiros ou notas médicas sigilosas.</p>
                 </div>
             </Card>
             
-            <Card variant="premium" className="p-6 border-sand">
-                <h4 className="text-xs font-bold uppercase mb-4 text-ebony">Suas Credenciais</h4>
+            <Card variant="premium" className="p-6 border-sand bg-white">
+                <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-ebony">Suas Credenciais</h4>
                 <div className="space-y-3">
-                    <Button variant="outline" className="w-full text-[10px] h-9">Mudar Minha Senha</Button>
-                    <Button variant="ghost" className="w-full text-[10px] h-9 text-red-500">Excluir Minha Conta</Button>
+                    <Button variant="outline" className="w-full text-[10px] h-10 border-sand">Alterar Senha</Button>
+                    <Button variant="ghost" className="w-full text-[10px] h-10 text-red-500 hover:bg-red-50">Sair com Segurança</Button>
                 </div>
             </Card>
         </div>
@@ -177,9 +184,9 @@ export default function ConfiguracoesPage() {
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
             />
             <div className="space-y-1.5">
-                <label className="text-sm font-medium text-mahogany uppercase tracking-wider pl-1">Cargo / Role</label>
+                <label className="text-[10px] font-bold text-mahogany uppercase tracking-widest pl-1">Cargo / Role</label>
                 <select 
-                    className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony outline-none focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm"
+                    className="w-full px-4 py-3 rounded-[12px] bg-white border border-sand text-ebony outline-none focus:border-champagne focus:ring-2 focus:ring-champagne/10 text-sm font-sans"
                     value={formData.role}
                     onChange={(e) => setFormData({...formData, role: e.target.value})}
                 >
@@ -187,19 +194,18 @@ export default function ConfiguracoesPage() {
                     <option value="ADMIN">Administrador (Dra. Maria)</option>
                 </select>
             </div>
-            <div className="p-3 bg-sand/20 rounded-xl flex items-start gap-3 border border-sand">
+            <div className="p-4 bg-sand/20 rounded-xl flex items-start gap-3 border border-sand shadow-inner">
                 <Lock size={16} className="text-bronze shrink-0 mt-0.5" />
-                <p className="text-[10px] text-mahogany/70">
-                    <strong>Senha Provisória:</strong> nexus@2024<br/>
-                    A nova colaboradora poderá mudar a senha após o primeiro acesso.
+                <p className="text-[10px] text-mahogany/70 leading-relaxed font-sans">
+                    <strong>Atenção:</strong> A senha provisória padrão é <code className="bg-white px-1 py-0.5 rounded border border-sand font-bold text-ebony">nexus@2024</code>. Oriente a colaboradora a trocá-la no primeiro acesso.
                 </p>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3">
-            <Button variant="ghost" type="button" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+          <div className="flex justify-end gap-3 pt-6 border-t border-sand/30">
+            <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
             <Button variant="primary" type="submit" disabled={saving}>
-                {saving ? 'Cadastrando' : 'Finalizar Cadastro'}
+                {saving ? 'Gravando...' : 'Finalizar Cadastro'}
             </Button>
           </div>
         </form>
