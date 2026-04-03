@@ -35,16 +35,28 @@ export const Sidebar = () => {
 
   useEffect(() => {
     const getProfile = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single();
-        setUserRole(data?.role || 'RECEPTION');
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single();
+
+          if (error) {
+              console.error('Erro ao buscar perfil:', error.message);
+              setUserRole('RECEPTION');
+          } else {
+              setUserRole(data?.role || 'RECEPTION');
+          }
+        }
+      } catch (err) {
+        console.error('Falha na autenticação:', err);
+        setUserRole('RECEPTION');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     getProfile();
   }, []);
