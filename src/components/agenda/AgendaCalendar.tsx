@@ -12,7 +12,7 @@ import {
   Plus, 
   MoreHorizontal,
   User,
-  Stethoscope,
+  Syringe,
   Loader2
 } from 'lucide-react';
 import { AppointmentModal } from './AppointmentModal';
@@ -39,7 +39,7 @@ export const AgendaCalendar = () => {
         .from('appointments')
         .select(`
           *,
-          patients (full_name, photo_url),
+          patients (full_name, id, photo_url),
           procedures (name, duration_min)
         `)
         .gte('start_time', startOfDay.toISOString())
@@ -86,6 +86,32 @@ export const AgendaCalendar = () => {
     return (diffMin / 60) * 100; // 100px por hora
   };
 
+  // Função para calcular sobreposição e retornar estilo (width e left)
+  const getOverlapStyle = (appt: any, currentAppointments: any[]) => {
+    const overlaps = currentAppointments.filter(a => {
+      if (a.id === appt.id) return false;
+      const aStart = new Date(a.start_time).getTime();
+      const aEnd = new Date(a.end_time).getTime();
+      const apptStart = new Date(appt.start_time).getTime();
+      const apptEnd = new Date(appt.end_time).getTime();
+      return (apptStart < aEnd && apptEnd > aStart);
+    });
+
+    if (overlaps.length === 0) return { width: 'calc(100% - 84px)', left: '80px' };
+
+    // Lógica simples de divisão de espaço
+    const index = [...overlaps, appt].sort((a,b) => a.id.localeCompare(b.id)).findIndex(a => a.id === appt.id);
+    const count = overlaps.length + 1;
+    const widthPercentage = (100 - 15) / count; // 15% reservado para as labels de hora
+    const left = 80 + (index * ((100 - 15) / count) * 8); // Offset heurístico para visualização
+
+    return { 
+        width: `${widthPercentage}%`, 
+        left: `${80 + (index * (80 / count))}%`,
+        maxWidth: `${widthPercentage}%`
+    };
+  };
+
   return (
     <div className="space-y-6">
       {/* Header da Agenda */}
@@ -116,7 +142,7 @@ export const AgendaCalendar = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Lado Esquerdo: Mini Calendário e Stats (Opcional) */}
+        {/* Lado Esquerdo: Mini Calendário e Stats */}
         <div className="lg:col-span-1 border-r border-sand/50 pr-4 space-y-6">
             <Card variant="premium" className="p-4 bg-bronze/5 border-bronze/10">
                 <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze mb-4">Resumo do Dia</h3>
@@ -141,7 +167,7 @@ export const AgendaCalendar = () => {
         {/* Lado Direito: Grade Horária */}
         <div className="lg:col-span-3">
           <Card variant="premium" className="relative h-[1300px] bg-white border-sand/50 overflow-y-auto">
-            {/* Linhas de Fundo (Horas) */}
+            {/* Linhas de Fundo */}
             {HOURS.map((hour) => (
               <div 
                 key={hour} 
@@ -154,7 +180,7 @@ export const AgendaCalendar = () => {
               </div>
             ))}
 
-            {/* Agendamentos Renderizados */}
+            {/* Agendamentos */}
             {loading ? (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-20">
                     <Loader2 className="animate-spin text-bronze" size={32} />
@@ -163,37 +189,38 @@ export const AgendaCalendar = () => {
                 appointments.map((appt) => {
                     const top = getTimePosition(appt.start_time);
                     const height = getDurationHeight(appt.start_time, appt.end_time);
+                    const style = getOverlapStyle(appt, appointments);
 
                     return (
                         <div 
                             key={appt.id}
-                            className="absolute left-20 right-4 rounded-xl border border-bronze/20 bg-sand/20 p-4 shadow-sm group hover:ring-2 hover:ring-bronze/30 transition-all cursor-pointer z-10"
-                            style={{ top: `${top}px`, height: `${height}px`, minHeight: '40px' }}
-                            onClick={() => {
-                                // Futuro: Abrir detalhes ou prontuário
+                            className="absolute rounded-xl border border-bronze/20 bg-sand/20 p-4 shadow-sm group hover:ring-2 hover:ring-bronze/30 transition-all cursor-pointer z-10"
+                            style={{ 
+                                top: `${top}px`, 
+                                height: `${height}px`, 
+                                left: style.left,
+                                width: style.width,
+                                minHeight: '40px' 
                             }}
                         >
-                            <div className="flex justify-between items-start">
-                                <div className="flex items-start gap-3">
-                                    <div className="w-8 h-8 rounded-full border border-bronze/20 overflow-hidden bg-white shrink-0 hidden md:block">
-                                        {appt.patients?.photo_url ? <img src={appt.patients.photo_url} className="w-full h-full object-cover" /> : <User size={14} className="m-auto mt-2 text-bronze/40" />}
+                            <div className="flex justify-between items-start overflow-hidden">
+                                <div className="flex items-start gap-2">
+                                    <div className="w-6 h-6 rounded-full border border-bronze/20 overflow-hidden bg-white shrink-0 hidden md:block">
+                                        {appt.patients?.photo_url ? <img src={appt.patients.photo_url} className="w-full h-full object-cover" /> : <User size={12} className="m-auto mt-1.5 text-bronze/40" />}
                                     </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-ebony uppercase tracking-wide truncate max-w-[200px]">
+                                    <div className="min-w-0">
+                                        <p className="text-[10px] font-bold text-ebony uppercase tracking-tight truncate">
                                             {appt.patients?.full_name}
                                         </p>
-                                        <p className="text-[10px] text-mahogany/60 flex items-center gap-1 font-medium mt-0.5">
-                                            <Stethoscope size={10} /> {appt.procedures?.name || 'Consulta'}
+                                        <p className="text-[9px] text-mahogany/60 flex items-center gap-1 font-medium truncate mt-0.5">
+                                            <Syringe size={10} className="text-bronze" /> {appt.procedures?.name || 'Consulta'}
                                         </p>
                                     </div>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-[10px] font-bold text-bronze tracking-widest">
+                                <div className="text-right shrink-0">
+                                    <p className="text-[9px] font-bold text-bronze tracking-widest">
                                         {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                                     </p>
-                                    <button className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-bronze/10 rounded-lg">
-                                        <MoreHorizontal size={14} className="text-mahogany" />
-                                    </button>
                                 </div>
                             </div>
                         </div>

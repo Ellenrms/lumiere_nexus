@@ -57,6 +57,28 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
     return () => clearTimeout(delayDebounceFn);
   }, [searchPatient]);
 
+  // Verificar Conflitos de Horário em Tempo Real
+  useEffect(() => {
+    if (!formData.date || !formData.time) return;
+
+    const checkConflicts = async () => {
+      const start = new Date(`${formData.date}T${formData.time}`);
+      const end = new Date(start.getTime() + formData.duration_min * 60000);
+
+      const { data } = await supabase
+        .from('appointments')
+        .select('id')
+        .lte('start_time', end.toISOString())
+        .gte('end_time', start.toISOString())
+        .limit(1);
+      
+      setConflict(!!data?.length);
+    };
+
+    const timeout = setTimeout(checkConflicts, 500);
+    return () => clearTimeout(timeout);
+  }, [formData.date, formData.time, formData.duration_min]);
+
   // Buscar Catálogo de Procedimentos
   useEffect(() => {
     const fetchProcedures = async () => {
