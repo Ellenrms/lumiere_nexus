@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -171,6 +172,13 @@ export default function PacientesPage() {
                     </td>
                     <td className="px-8 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Link
+                          href={`/pacientes/${patient.id}`}
+                          className="p-2 hover:bg-champagne/10 rounded-xl text-bronze transition-colors"
+                          title="Ver Perfil Completo"
+                        >
+                          <ChevronRight size={18} />
+                        </Link>
                         <button 
                           onClick={() => {
                             setSelectedPatient(patient);
