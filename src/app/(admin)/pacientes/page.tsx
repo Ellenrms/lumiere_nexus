@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { Modal } from '@/components/ui/Modal';
 import { PatientForm } from '@/components/patients/PatientForm';
+import { MedicalRecordForm } from '@/components/records/MedicalRecordForm';
 import { 
   Plus, 
   Search, 
@@ -25,7 +26,9 @@ export default function PacientesPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   const [editingPatient, setEditingPatient] = useState<any>(null);
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
   const fetchPatients = async () => {
     try {
@@ -170,8 +173,8 @@ export default function PacientesPage() {
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button 
                           onClick={() => {
-                            // Link para abrir prontuário de atendimento (será implementado a seguir)
-                            alert('Iniciando Novo Atendimento para: ' + patient.full_name);
+                            setSelectedPatient(patient);
+                            setIsRecordModalOpen(true);
                           }}
                           className="p-2 hover:bg-bronze/10 rounded-xl text-bronze transition-colors flex items-center gap-1 text-xs font-medium"
                           title="Novo Atendimento"
@@ -219,6 +222,25 @@ export default function PacientesPage() {
             fetchPatients();
           }}
         />
+      </Modal>
+
+      {/* Modal de Novo Atendimento */}
+      <Modal
+        isOpen={isRecordModalOpen}
+        onClose={() => setIsRecordModalOpen(false)}
+        title="Novo Atendimento"
+      >
+        {selectedPatient && (
+          <MedicalRecordForm 
+            patientId={selectedPatient.id}
+            patientName={selectedPatient.full_name}
+            onCancel={() => setIsRecordModalOpen(false)}
+            onSuccess={() => {
+              setIsRecordModalOpen(false);
+              fetchPatients();
+            }}
+          />
+        )}
       </Modal>
 
       {/* Decorative details */}
