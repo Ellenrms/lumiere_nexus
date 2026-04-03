@@ -44,8 +44,8 @@ export default function DashboardPage() {
         .order('start_time', { ascending: true });
 
       // Cálculo de Ocupação (Grade de 14h = 840 min)
-      const validAppts = appts?.filter(a => a.status !== 'cancelado' && a.status !== 'bloqueado') || [];
-      const totalBookedMin = validAppts.reduce((acc, curr) => acc + (curr.procedures?.duration_min || 30), 0);
+      const validAppts = appts?.filter((a: any) => a.status !== 'cancelado' && a.status !== 'bloqueado') || [];
+      const totalBookedMin = validAppts.reduce((acc: number, curr: any) => acc + (curr.procedures?.duration_min || 30), 0);
       const occupancy = Math.min(Math.round((totalBookedMin / 840) * 100), 100);
 
       // 2. Novos Pacientes no Mês
