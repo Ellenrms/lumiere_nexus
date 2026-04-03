@@ -75,12 +75,21 @@ export const PatientForm: React.FC<PatientFormProps> = ({
     setLoading(true);
 
     try {
+      // Sanitização: enviar null em vez de string vazia para campos de tipo específico
+      const patientData = {
+        ...formData,
+        birth_date: formData.birth_date || null,
+        cpf: formData.cpf || null,
+        phone: formData.phone || null,
+        email: formData.email || null,
+        updated_at: new Date()
+      };
+
       const { error } = await supabase
         .from('patients')
         .upsert({
           id: initialData?.id,
-          ...formData,
-          updated_at: new Date()
+          ...patientData
         });
 
       if (error) throw error;
