@@ -152,8 +152,13 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
                 variant="outline" 
                 size="sm" 
                 className="flex items-center gap-2 border-bronze/30 text-bronze hover:bg-bronze hover:text-white transition-all shadow-sm"
-                onClick={() => setIsComparatorOpen(true)}
-                disabled={allPhotos.length < 2}
+                onClick={() => {
+                  if (allPhotos.length < 2) {
+                    alert('Você precisa de pelo menos 2 fotos registradas nos atendimentos para realizar o comparativo.');
+                    return;
+                  }
+                  setIsComparatorOpen(true);
+                }}
               >
                 <Columns size={16} />
                 Antes e Depois
