@@ -114,7 +114,7 @@ export default function RelatoriosPage() {
 
       {/* Cards de Resumo */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card variant="premium" className="bg-ebony text-white flex flex-col justify-between p-6 h-32">
+        <Card variant="premium" className="bg-[#1A1A1A] text-white flex flex-col justify-between p-6 h-36 border-none shadow-xl">
           <p className="text-[10px] uppercase tracking-[0.2em] opacity-60">Faturamento Total</p>
           <div className="flex justify-between items-end">
             <span className="text-2xl font-serif">
@@ -123,21 +123,21 @@ export default function RelatoriosPage() {
             <TrendingUp size={20} className="text-bronze" />
           </div>
         </Card>
-        <Card variant="premium" className="bg-bronze text-white flex flex-col justify-between p-6 h-32">
+        <Card variant="premium" className="bg-[#C5A059] text-white flex flex-col justify-between p-6 h-36 border-none shadow-xl">
           <p className="text-[10px] uppercase tracking-[0.2em] opacity-90">Total de Pacientes</p>
           <div className="flex justify-between items-end">
             <span className="text-2xl font-serif">{stats.totalPatients}</span>
             <Users size={20} className="text-white/40" />
           </div>
         </Card>
-        <Card variant="premium" className="flex flex-col justify-between p-6 h-32 border-sand/40 bg-white shadow-sm">
+        <Card variant="premium" className="flex flex-col justify-between p-6 h-36 border-sand/40 bg-white shadow-sm">
           <p className="text-[10px] uppercase tracking-[0.2em] text-mid-gray">Conversão Média</p>
           <div className="flex justify-between items-end">
             <span className="text-2xl font-serif text-ebony">84%</span>
             <ArrowUpRight size={20} className="text-green-500" />
           </div>
         </Card>
-        <Card variant="premium" className="flex flex-col justify-between p-6 h-32 border-sand/40 bg-white shadow-sm">
+        <Card variant="premium" className="flex flex-col justify-between p-6 h-36 border-sand/40 bg-white shadow-sm">
           <p className="text-[10px] uppercase tracking-[0.2em] text-mid-gray">Valor Médio/Sessão</p>
           <div className="flex justify-between items-end">
             <span className="text-2xl font-serif text-ebony">

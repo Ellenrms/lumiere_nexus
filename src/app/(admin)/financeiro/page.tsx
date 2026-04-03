@@ -81,12 +81,14 @@ export default function FinanceiroPage() {
     return acc;
   }, { paid: 0, pending: 0 });
 
+  const averageTicket = records.length > 0 ? totals.paid / records.filter(r => r.payment_status === 'pago').length || 0 : 0;
+
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
+    <div className="space-y-8 max-w-7xl mx-auto">
       {/* Header com Filtro de Data */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-page-header">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
-          <h1 className="text-page-title text-ebony">Fluxo Financeiro</h1>
+          <h1 className="text-display text-4xl text-ebony">Fluxo Financeiro</h1>
           <p className="text-sm text-mid-gray italic font-serif">Acompanhamento de atendimentos e recebimentos</p>
         </div>
         <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-sand">
@@ -101,34 +103,46 @@ export default function FinanceiroPage() {
       </div>
 
       {/* Cards de Resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card variant="premium" className="bg-bronze text-white p-6 shadow-xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card variant="premium" className="bg-[#1A1A1A] text-white p-6 shadow-xl border-none">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] opacity-80 mb-1">Total Recebido</p>
-              <p className="text-3xl font-serif">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.paid)}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] opacity-60 mb-1">Total Recebido</p>
+              <p className="text-2xl font-serif">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.paid)}</p>
             </div>
-            <TrendingUp size={24} className="opacity-50" />
+            <TrendingUp size={24} className="opacity-30 text-bronze" />
           </div>
         </Card>
 
-        <Card variant="premium" className="p-6 border-mahogany/20">
+        <Card variant="premium" className="bg-[#C5A059] text-white p-6 shadow-xl border-none">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-mid-gray mb-1">A Receber (Pendentes)</p>
-              <p className="text-3xl font-serif text-mahogany">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.pending)}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] opacity-80 mb-1">A Receber (Pendentes)</p>
+              <p className="text-2xl font-serif">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totals.pending)}</p>
             </div>
-            <Clock size={24} className="text-mahogany/30" />
+            <Clock size={24} className="opacity-40" />
           </div>
         </Card>
 
-        <Card variant="premium" className="p-6">
+        <Card variant="premium" className="bg-white p-6 border-sand shadow-sm">
           <div className="flex justify-between items-start">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-mid-gray mb-1">Atendimentos Hoje</p>
-              <p className="text-3xl font-serif text-ebony">{records.length}</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-mid-gray mb-1">Atendimentos Hoje</p>
+              <p className="text-2xl font-serif text-ebony">{records.length}</p>
             </div>
-            <Receipt size={24} className="text-sand" />
+            <Receipt size={24} className="text-bronze/40" />
+          </div>
+        </Card>
+
+        <Card variant="premium" className="bg-white p-6 border-sand shadow-sm">
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-mid-gray mb-1">Ticket Médio</p>
+              <p className="text-2xl font-serif text-ebony">
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(averageTicket)}
+              </p>
+            </div>
+            <DollarSign size={24} className="text-bronze/40" />
           </div>
         </Card>
       </div>

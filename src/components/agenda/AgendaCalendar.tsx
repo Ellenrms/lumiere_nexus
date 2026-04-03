@@ -142,31 +142,39 @@ export const AgendaCalendar = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        {/* Lado Esquerdo: Mini Calendário e Stats */}
+        {/* Lateral Esquerda: Lista Rápida */}
         <div className="lg:col-span-1 border-r border-sand/50 pr-4 space-y-6">
-            <Card variant="premium" className="p-4 bg-bronze/5 border-bronze/10">
-                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze mb-4">Resumo do Dia</h3>
-                <div className="space-y-4">
-                    <div className="flex justify-between items-end">
-                        <span className="text-sm text-mid-gray">Agendamentos</span>
-                        <span className="text-xl font-serif text-ebony">{appointments.length}</span>
-                    </div>
-                    <div className="flex justify-between items-end">
-                        <span className="text-sm text-mid-gray">Ocupação Estimada</span>
-                        <span className="text-xl font-serif text-ebony">
-                            {Math.round((appointments.reduce((acc, curr) => {
-                                const diff = (new Date(curr.end_time).getTime() - new Date(curr.start_time).getTime()) / 60000;
-                                return acc + diff;
-                            }, 0) / (12 * 60)) * 100)}%
-                        </span>
-                    </div>
+            <Card variant="premium" className="p-5 bg-[#1A1A1A] text-white border-none shadow-xl">
+                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze/80 mb-4">Resumo Clínico</h3>
+                <div className="flex justify-between items-end">
+                    <span className="text-xs opacity-60">Sessões Hoje</span>
+                    <span className="text-2xl font-serif">{appointments.length}</span>
                 </div>
             </Card>
+
+            <div className="space-y-4">
+                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-mahogany pl-1">Próximas Pacientes</h3>
+                {appointments.length === 0 ? (
+                    <p className="text-xs text-mid-gray italic pl-1">Nenhum agendamento para hoje.</p>
+                ) : (
+                    <div className="space-y-3">
+                        {appointments.slice(0, 5).map((appt) => (
+                            <div key={appt.id} className="p-3 bg-white border border-sand/60 rounded-xl shadow-sm hover:border-bronze/40 transition-colors">
+                                <p className="text-[10px] font-bold text-bronze mb-1">
+                                    {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                                <p className="text-xs font-bold text-ebony truncate">{appt.patients?.full_name}</p>
+                                <p className="text-[10px] text-mid-gray truncate">{appt.procedures?.name || 'Consulta'}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
 
         {/* Lado Direito: Grade Horária */}
         <div className="lg:col-span-3">
-          <Card variant="premium" className="relative h-[1300px] bg-white border-sand/50 overflow-y-auto">
+          <Card variant="premium" className="relative h-[1300px] bg-white border-sand/50 shadow-inner overflow-y-auto">
             {/* Linhas de Fundo */}
             {HOURS.map((hour) => (
               <div 
