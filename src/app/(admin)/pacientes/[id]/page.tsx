@@ -18,6 +18,7 @@ import {
   Fingerprint,
   AlertCircle,
   History,
+  Edit2,
   Image as ImageIcon,
   Loader2
 } from 'lucide-react';
@@ -29,6 +30,7 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
   const [records, setRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const [editingRecord, setEditingRecord] = useState<any>(null);
 
   const fetchData = async () => {
     try {
@@ -171,9 +173,21 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
                           {new Date(record.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                         </p>
                       </div>
-                      <span className="px-3 py-1 bg-sand/30 rounded-full text-[10px] uppercase font-bold text-mahogany tracking-widest">
-                        {record.status}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={() => {
+                            setEditingRecord(record);
+                            setIsRecordModalOpen(true);
+                          }}
+                          className="p-1.5 hover:bg-sand rounded-lg text-bronze transition-colors"
+                          title="Editar Evolução"
+                        >
+                          <Edit2 size={14} />
+                        </button>
+                        <span className="px-3 py-1 bg-sand/30 rounded-full text-[10px] uppercase font-bold text-mahogany tracking-widest">
+                          {record.status}
+                        </span>
+                      </div>
                     </header>
 
                     <div className="space-y-4">
@@ -218,15 +232,23 @@ export default function PacientePerfilPage({ params }: { params: Promise<{ id: s
       {/* Modal de Novo Atendimento */}
       <Modal
         isOpen={isRecordModalOpen}
-        onClose={() => setIsRecordModalOpen(false)}
-        title="Novo Atendimento"
+        onClose={() => {
+          setIsRecordModalOpen(false);
+          setEditingRecord(null);
+        }}
+        title={editingRecord ? "Editar Atendimento" : "Novo Atendimento"}
       >
         <MedicalRecordForm 
           patientId={patient.id}
           patientName={patient.full_name}
-          onCancel={() => setIsRecordModalOpen(false)}
+          initialData={editingRecord}
+          onCancel={() => {
+            setIsRecordModalOpen(false);
+            setEditingRecord(null);
+          }}
           onSuccess={() => {
             setIsRecordModalOpen(false);
+            setEditingRecord(null);
             fetchData();
           }}
         />

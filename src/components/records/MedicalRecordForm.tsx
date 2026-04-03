@@ -20,27 +20,31 @@ interface MedicalRecordFormProps {
   patientName: string;
   onSuccess: () => void;
   onCancel: () => void;
+  initialData?: any;
 }
 
 export const MedicalRecordForm: React.FC<MedicalRecordFormProps> = ({
   patientId,
   patientName,
   onSuccess,
-  onCancel
+  onCancel,
+  initialData
 }) => {
   const [loading, setLoading] = useState(false);
   const [procedures, setProcedures] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
   
   const [formData, setFormData] = useState({
-    procedure_id: '',
-    price_charged: '',
-    chief_complaint: '',
-    clinical_notes: '',
-    status: 'finalizado'
+    procedure_id: initialData?.procedure_id || '',
+    price_charged: initialData?.products_used?.price || '',
+    chief_complaint: initialData?.chief_complaint || '',
+    clinical_notes: initialData?.notes_rich?.evolution || '',
+    status: initialData?.status || 'finalizado'
   });
 
-  const [photos, setPhotos] = useState<any[]>([]);
+  const [photos, setPhotos] = useState<any[]>(
+    initialData?.record_photos?.map((p: any) => ({ url: p.storage_path, path: p.storage_path })) || []
+  );
 
   useEffect(() => {
     const fetchProcedures = async () => {
@@ -101,11 +105,13 @@ export const MedicalRecordForm: React.FC<MedicalRecordFormProps> = ({
 
     setLoading(true);
     try {
-      // 1. Criar Atendimento (Medical Record)
+      // 1. Criar ou Atualizar Atendimento (Medical Record)
       const { data: record, error: recordError } = await supabase
         .from('medical_records')
-        .insert({
+        .upsert({
+          id: initialData?.id,
           patient_id: patientId,
+          procedure_id: formData.procedure_id,
           chief_complaint: formData.chief_complaint,
           notes_rich: { evolution: formData.clinical_notes },
           products_used: { price: formData.price_charged },
