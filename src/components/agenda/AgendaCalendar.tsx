@@ -184,28 +184,34 @@ export const AgendaCalendar = () => {
         {/* Lateral Esquerda */}
         <div className="lg:col-span-1 border-r border-sand/50 pr-4 space-y-6">
             <Card variant="premium" className="p-5 bg-[#1A1A1A] text-white border-none shadow-xl">
-                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze/80 mb-4">Resumo Clínico</h3>
+                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-bronze mb-4">Resumo Clínico</h3>
                 <div className="flex justify-between items-end">
-                    <span className="text-xs opacity-60">Sessões Hoje</span>
-                    <span className="text-2xl font-serif">{appointments.filter(a => a.status !== 'bloqueado').length}</span>
+                    <span className="text-xs text-white/70">Atendimentos p/ Hoje</span>
+                    <span className="text-3xl font-serif text-bronze">
+                        {appointments.filter(a => a.status === 'confirmado' || a.status === 'presente').length}
+                    </span>
                 </div>
             </Card>
 
             <div className="space-y-4">
-                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-mahogany pl-1">Próximas Pacientes</h3>
-                {appointments.filter(a => a.status !== 'bloqueado').length === 0 ? (
-                    <p className="text-xs text-mid-gray italic pl-1">Nenhum agendamento para hoje.</p>
+                <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-mahogany pl-1 font-sans">Próximas Pacientes</h3>
+                {appointments.filter(a => a.status === 'confirmado' || a.status === 'presente').length === 0 ? (
+                    <p className="text-xs text-mid-gray italic pl-1 font-serif">Nenhum agendamento pendente.</p>
                 ) : (
                     <div className="space-y-3">
-                        {appointments.filter(a => a.status !== 'bloqueado').slice(0, 5).map((appt) => (
-                            <div key={appt.id} className="p-3 bg-white border border-sand/60 rounded-xl shadow-sm hover:border-bronze/40 transition-colors group">
-                                <p className="text-[10px] font-bold text-bronze mb-1">
-                                    {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-                                </p>
-                                <p className="text-xs font-bold text-ebony truncate group-hover:text-bronze transition-colors">{appt.patients?.full_name}</p>
-                                <p className="text-[10px] text-mid-gray truncate">{appt.procedures?.name || 'Consulta'}</p>
-                            </div>
-                        ))}
+                        {appointments
+                            .filter(a => a.status === 'confirmado' || a.status === 'presente')
+                            .slice(0, 5)
+                            .map((appt) => (
+                                <div key={appt.id} className="p-3 bg-white border border-sand/60 rounded-xl shadow-sm hover:border-bronze/40 transition-colors group">
+                                    <p className="text-[10px] font-bold text-bronze mb-1">
+                                        {new Date(appt.start_time).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                    <p className="text-xs font-bold text-ebony truncate group-hover:text-bronze transition-colors">{appt.patients?.full_name}</p>
+                                    <p className="text-[10px] text-mid-gray truncate font-sans">{appt.procedures?.name || 'Consulta'}</p>
+                                </div>
+                            ))
+                        }
                     </div>
                 )}
             </div>
