@@ -195,9 +195,9 @@ export default function DashboardPage() {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Avatar src={appt.patients?.photo_url} name={appt.patients?.full_name} size="sm" />
+                                    <Avatar src={appt.patients?.photo_url} name={appt.patients?.full_name || 'Paciente'} size="sm" />
                                     <div>
-                                        <p className="text-sm font-bold text-ebony tracking-tight">{appt.patients?.full_name}</p>
+                                        <p className="text-sm font-bold text-ebony tracking-tight">{appt.patients?.full_name || 'Paciente Não Identificado'}</p>
                                         <p className="text-xs text-mahogany/60 flex items-center gap-1 uppercase tracking-tighter font-medium">
                                             <Syringe size={10} className="text-bronze" /> {appt.procedures?.name || 'Consulta'}
                                             {appt.status !== 'confirmado' && <span className="ml-1 text-[8px] border px-1 rounded font-bold uppercase">{appt.status}</span>}

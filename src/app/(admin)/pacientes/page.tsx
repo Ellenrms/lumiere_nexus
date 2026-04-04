@@ -153,7 +153,7 @@ export default function PacientesPage() {
                   <tr key={patient.id} className="group hover:bg-sand/10 transition-all">
                     <td className="px-8 py-4">
                       <div className="flex items-center gap-4">
-                        <Avatar src={patient.photo_url} name={patient.full_name} size="md" />
+                        <Avatar src={patient.photo_url} name={patient.full_name || 'Paciente'} size="md" />
                         <div>
                           <p className="text-sm font-medium text-ebony group-hover:text-bronze transition-colors">{patient.full_name}</p>
                           <p className="text-[10px] text-mid-gray uppercase tracking-widest font-sans">{patient.id.slice(0,8)}</p>
