@@ -40,7 +40,29 @@ Ao clicar nos três pontos horizontais de um agendamento, você pode:
 
 ---
 
-## 💰 3. Fluxo Financeiro & Baixas
+## 🩺 3. Gestão Clínica: Prontuário & Evolução
+O prontuário é onde você registra a história de beleza e saúde de cada paciente. 
+
+### 📝 Abrir Novo Atendimento:
+1.  Acesse o módulo **Pacientes**.
+2.  Clique no nome da paciente desejada para abrir o perfil.
+3.  No topo direito, clique no botão **"+ Novo Atendimento"**.
+4.  Preencha a **Queixa Principal** e descreva a **Evolução Clínica** da sessão.
+
+### 📸 Galeria de Fotos & Registro Visual:
+A Lumière permite anexar fotos em cada atendimento para documentar o progresso:
+*   As fotos ficam organizadas por **Sessão/Data** dentro do perfil da paciente.
+*   Você pode ver todas as fotos na **Linha do Tempo** cronológica.
+
+### ⚖️ Ferramenta "Antes e Depois" (Photo Comparator):
+Esta é a ferramenta de maior impacto para fidelização:
+1.  No perfil da paciente, clique no botão **"Antes e Depois"** (ícone de colunas).
+2.  O sistema abrirá uma janela para você selecionar **duas fotos** de datas diferentes.
+3.  As fotos aparecerão lado a lado para um comparativo impecável do resultado dos procedimentos.
+
+---
+
+## 💰 4. Fluxo Financeiro & Baixas
 Transparência total no que entra e no que falta receber.
 
 ### 💹 Indicadores Financeiros:
